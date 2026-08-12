@@ -1,0 +1,13 @@
+# frozen_string_literal: true
+
+en:
+  label_open_notifications: "Real-time Notifications"
+  label_notifications: "Notifications"
+  label_mark_all_read: "Mark all as read"
+  label_notification_preferences: "Notification Preferences"
+  label_quiet_hours: "Quiet Hours (Do Not Disturb)"
+  label_webpush_settings: "Desktop Browser WebPush"
+  label_digest_settings: "Daily Digest Summary"
+  notice_preferences_updated: "Your notification preferences were successfully updated."
+  text_user_mentioned: "%{author} mentioned you on issue #%{issue_id}"
+  text_issue_updated: "Issue #%{issue_id} updated in %{project}"

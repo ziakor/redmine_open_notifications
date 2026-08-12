@@ -1,0 +1,428 @@
+<style>
+  :root {
+    --notif-card-bg: #ffffff;
+    --notif-card-border: #e2e8f0;
+    --notif-title-color: #1e293b;
+    --notif-subtext-color: #64748b;
+    --notif-input-bg: #f8fafc;
+    --notif-input-color: #0f172a;
+    --notif-input-border: #cbd5e1;
+    --notif-pill-bg: #f1f5f9;
+    --notif-pill-color: #334155;
+  }
+
+  /* Only switch to dark styling if Redmine theme explicitly defines a dark class */
+  body.theme-dark, html[data-theme="dark"], body.dark {
+    --notif-card-bg: #1e293b;
+    --notif-card-border: #334155;
+    --notif-title-color: #f8fafc;
+    --notif-subtext-color: #94a3b8;
+    --notif-input-bg: #0f172a;
+    --notif-input-color: #f8fafc;
+    --notif-input-border: #475569;
+    --notif-pill-bg: #334155;
+    --notif-pill-color: #e2e8f0;
+  }
+
+  /* Hide Redmine core's redundant duplicate submit button rendered outside the partial at the bottom */
+  form[action*="settings/plugin/redmine_open_notifications"] > input[type="submit"] {
+    display: none !important;
+  }
+
+  .modern-settings-container {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--notif-input-color);
+    max-width: 800px;
+    margin: 10px 0;
+  }
+  .settings-section-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--notif-title-color);
+  }
+  .settings-section-subtitle {
+    font-size: 12px;
+    color: var(--notif-subtext-color);
+    margin-bottom: 16px;
+  }
+  .integration-card {
+    background: var(--notif-card-bg);
+    border: 1px solid var(--notif-card-border);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .service-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .service-icon-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    background: #10B981;
+    color: #ffffff;
+  }
+  .service-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--notif-title-color);
+  }
+  .service-desc {
+    font-size: 12px;
+    color: var(--notif-subtext-color);
+  }
+  .status-pill {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+  }
+  .status-active { background: #dcfce7; color: #15803d; }
+  .status-inactive { background: var(--notif-pill-bg); color: var(--notif-subtext-color); }
+
+  .modern-input {
+    box-sizing: border-box;
+    padding: 10px 14px;
+    font-size: 13px;
+    border: 1px solid var(--notif-input-border);
+    border-radius: 8px;
+    background: var(--notif-input-bg);
+    color: var(--notif-input-color);
+    transition: all 0.15s ease;
+  }
+  .modern-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: var(--notif-card-bg);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+  .toggles-card {
+    background: var(--notif-card-bg);
+    border: 1px solid var(--notif-card-border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--notif-card-border);
+  }
+  .toggle-row:last-child {
+    border-bottom: none;
+  }
+  .toggle-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--notif-title-color);
+  }
+  .toggle-subtext {
+    font-size: 11px;
+    color: var(--notif-subtext-color);
+    margin-top: 2px;
+  }
+  .checkbox-pill-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    align-items: center;
+  }
+  /* Force isolation from Redmine base label floats and widths */
+  .checkbox-pill-label {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: var(--notif-pill-bg);
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: var(--notif-pill-color) !important;
+    cursor: pointer !important;
+    border: 1px solid var(--notif-card-border) !important;
+    user-select: none !important;
+    transition: all 0.15s ease !important;
+    float: none !important;
+    width: auto !important;
+    margin: 0 !important;
+    text-align: left !important;
+    line-height: 1.4 !important;
+  }
+  .checkbox-pill-label:has(input:checked) {
+    background: #eff6ff !important;
+    border-color: #3b82f6 !important;
+    color: #1d4ed8 !important;
+    font-weight: 600 !important;
+  }
+  .checkbox-pill-label input[type="checkbox"] {
+    margin: 0 !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    width: 14px !important;
+    height: 14px !important;
+    vertical-align: middle !important;
+  }
+  .remove-webhook-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    cursor: pointer;
+    color: #ef4444;
+    border: 1px solid #fca5a5;
+    background: #fff5f5;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 1;
+    transition: all 0.15s ease;
+    box-sizing: border-box;
+  }
+  .remove-webhook-btn:hover {
+    background: #fee2e2;
+    color: #dc2626;
+  }
+  .submit-settings-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #2563eb !important;
+    color: #ffffff !important;
+    padding: 0 24px !important;
+    height: 38px !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    border-radius: 6px !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: background 0.15s ease !important;
+    text-align: center !important;
+    line-height: 38px !important;
+    box-sizing: border-box !important;
+    float: none !important;
+    margin: 0 !important;
+  }
+  .submit-settings-btn:hover {
+    background: #1d4ed8 !important;
+  }
+
+  /* Floating Vercel-style Unsaved Changes Banner */
+  #unsaved-changes-banner {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #0f172a;
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    z-index: 9999;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  #unsaved-changes-banner.visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .unsaved-dot {
+    width: 8px;
+    height: 8px;
+    background: #f59e0b;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #f59e0b;
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+  }
+  .banner-save-btn {
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .banner-save-btn:hover {
+    background: #1d4ed8;
+  }
+</style>
+
+<div class="modern-settings-container">
+  <div class="settings-section-title">Webhooks Outbound Multi-Destinations</div>
+  <div class="settings-section-subtitle">Ajoutez une ou plusieurs URLs de Webhooks pour diffuser les événements de tickets vers vos services externes (Slack, Teams, Discord, Zapier, n8n...).</div>
+
+  <div class="integration-card">
+    <div class="card-header" style="margin-bottom: 16px;">
+      <div class="service-info">
+        <div class="service-icon-badge">⚡</div>
+        <div>
+          <div class="service-title">URLs des Webhooks Outbound</div>
+          <div class="service-desc">Chaque URL recevra le payload JSON d'événement en temps réel.</div>
+        </div>
+      </div>
+      <% urls = Array(@settings['webhook_urls']).reject(&:blank?) %>
+      <% urls = [(@settings['webhook_url'].presence || @settings['slack_webhook_url'].presence)] if urls.empty? && (@settings['webhook_url'].present? || @settings['slack_webhook_url'].present?) %>
+      <span class="status-pill <%= urls.any?(&:present?) ? 'status-active' : 'status-inactive' %>">
+        <%= urls.any?(&:present?) ? "#{urls.count} Webhook(s) actif(s)" : 'Inactif' %>
+      </span>
+    </div>
+
+    <div id="webhooks-list-container">
+      <% urls << '' if urls.empty? %>
+      <% urls.each do |url| %>
+        <div class="webhook-item-row" style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
+          <input type="text" name="settings[webhook_urls][]" value="<%= url %>" class="modern-input" placeholder="https://votre-destination.com/webhook" style="flex: 1;">
+          <button type="button" class="remove-webhook-btn" title="Supprimer">✕</button>
+        </div>
+      <% end %>
+    </div>
+
+    <button type="button" id="add-webhook-btn" class="button-secondary" style="margin-top: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
+      <span>+ Ajouter un Webhook</span>
+    </button>
+  </div>
+
+  <div class="settings-section-title">Comportement & Événements Globaux</div>
+  <div class="settings-section-subtitle">Définissez les règles de déclenchement par défaut pour toutes les notifications.</div>
+
+  <div class="toggles-card">
+    <div class="toggle-row" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+      <div>
+        <div class="toggle-label">Événements déclencheurs par défaut</div>
+        <div class="toggle-subtext">Sélectionnez les actions de tickets qui déclenchent une notification.</div>
+      </div>
+      <div class="checkbox-pill-group">
+        <%= hidden_field_tag 'settings[enabled_events][]', '' %>
+        <% [
+          ['issue_created', 'Nouveau ticket'],
+          ['issue_updated', 'Ticket mis à jour'],
+          ['note_added', 'Nouveau commentaire'],
+          ['user_mentioned', 'Mention @user']
+        ].each do |event_key, event_label| %>
+          <label class="checkbox-pill-label">
+            <%= check_box_tag 'settings[enabled_events][]', event_key, Array(@settings['enabled_events']).include?(event_key) %>
+            <%= event_label %>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Exclure les auto-notifications</div>
+        <div class="toggle-subtext">Ne pas envoyer de notification à l'utilisateur qui a lui-même créé ou commenté le ticket.</div>
+      </div>
+      <div>
+        <%= check_box_tag 'settings[suppress_self_notifications]', '1', @settings['suppress_self_notifications'] == '1' %>
+      </div>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Autoriser le WebPush Navigateur Desktop</div>
+        <div class="toggle-subtext">Permet aux utilisateurs de recevoir des pop-up d'alerte Push sur leur bureau.</div>
+      </div>
+      <div>
+        <%= check_box_tag 'settings[enable_webpush]', '1', @settings['enable_webpush'] == '1' %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prominent Action Bar at the bottom of the card container -->
+  <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--notif-card-border); display: flex; justify-content: flex-end;">
+    <input type="submit" name="commit" value="Enregistrer les paramètres" class="submit-settings-btn">
+  </div>
+</div>
+
+<!-- Floating Unsaved Changes Notification Pill -->
+<div id="unsaved-changes-banner">
+  <div style="display: flex; align-items: center; gap: 8px;">
+    <span class="unsaved-dot"></span>
+    <span>Modifications non enregistrées</span>
+  </div>
+  <button type="button" id="banner-submit-btn" class="banner-save-btn">Enregistrer</button>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('webhooks-list-container');
+    const addBtn = document.getElementById('add-webhook-btn');
+    const banner = document.getElementById('unsaved-changes-banner');
+    const form = document.querySelector('form[action*="settings/plugin/redmine_open_notifications"]') || document.querySelector('.modern-settings-container').closest('form');
+    const bannerBtn = document.getElementById('banner-submit-btn');
+
+    function showUnsavedBanner() {
+      if (banner) banner.classList.add('visible');
+    }
+
+    if (form) {
+      form.addEventListener('input', showUnsavedBanner);
+      form.addEventListener('change', showUnsavedBanner);
+    }
+
+    if (bannerBtn && form) {
+      bannerBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        form.submit();
+      });
+    }
+
+    if (addBtn && container) {
+      addBtn.addEventListener('click', () => {
+        const row = document.createElement('div');
+        row.className = 'webhook-item-row';
+        row.style.cssText = 'display: flex; gap: 10px; margin-bottom: 10px; align-items: center;';
+        row.innerHTML = `
+          <input type="text" name="settings[webhook_urls][]" value="" class="modern-input" placeholder="https://votre-destination.com/webhook" style="flex: 1;">
+          <button type="button" class="remove-webhook-btn" title="Supprimer">✕</button>
+        `;
+        container.appendChild(row);
+        showUnsavedBanner();
+      });
+
+      container.addEventListener('click', (e) => {
+        if (e.target && e.target.classList.contains('remove-webhook-btn')) {
+          e.preventDefault();
+          const row = e.target.closest('.webhook-item-row');
+          if (row) {
+            row.remove();
+            showUnsavedBanner();
+          }
+        }
+      });
+    }
+  });
+</script>

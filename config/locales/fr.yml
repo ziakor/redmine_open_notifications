@@ -1,0 +1,14 @@
+# frozen_string_literal: true
+
+fr:
+  label_open_notifications: "Notifications Temps Réel"
+  label_notifications: "Notifications"
+  label_mark_all_read: "Tout marquer comme lu"
+  label_notification_preferences: "Préférences de Notifications"
+  label_quiet_hours: "Plages de Silence (Ne Pas Déranger)"
+  label_webpush_settings: "Notifications Push Navigateur Desktop"
+  label_digest_settings: "Résumé Quotidien (Digest)"
+  notice_successful_update: "Mise à jour effectuée avec succès."
+  notice_preferences_updated: "Vos préférences de notification ont été enregistrées avec succès."
+  text_user_mentioned: "%{author} vous a mentionné sur le ticket #%{issue_id}"
+  text_issue_updated: "Ticket #%{issue_id} mis à jour dans %{project}"

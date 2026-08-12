@@ -1,0 +1,77 @@
+<h2>Mes Préférences de Notifications</h2>
+
+<%= form_for @preference, url: notification_preference_path, method: :put do |f| %>
+  <fieldset class="box tabular">
+    <legend>Canaux & Push Desktop</legend>
+    <p>
+      <%= f.label :webpush_enabled, "Push Navigateur Desktop" %>
+      <%= f.check_box :webpush_enabled %>
+      <em class="info">Recevoir des alertes push pop-up directement sur le bureau de votre ordinateur.</em>
+    </p>
+  </fieldset>
+
+  <fieldset class="box tabular">
+    <legend>Filtres d'Événements (Mes Types de Notifications)</legend>
+    <p>
+      <label>Recevoir des alertes pour</label>
+      <span style="display: inline-flex; gap: 12px; flex-wrap: wrap; padding-top: 4px;">
+        <% user_events = @preference.events_list %>
+        <% [
+          ["Mentions @moi", "user_mentioned"],
+          ["Nouveaux tickets", "issue_created"],
+          ["Mises à jour de tickets", "issue_updated"],
+          ["Nouveaux commentaires", "note_added"]
+        ].each do |label, event_code| %>
+          <label style="margin-left: 0; font-weight: normal; width: auto;">
+            <%= check_box_tag "user_notification_preference[enabled_events][]", event_code, user_events.include?(event_code) %>
+            <%= label %>
+          </label>
+        <% end %>
+      </span>
+      <br>
+      <em class="info">Choisissez les types d'actions qui déclenchent des notifications pour vous (les mentions @moi sont toujours actives par sécurité).</em>
+    </p>
+  </fieldset>
+
+  <fieldset class="box tabular">
+    <legend>Plages de Silence (Ne Pas Déranger)</legend>
+    <p>
+      <%= f.label :quiet_hours_start, "Heure de début" %>
+      <%= f.text_field :quiet_hours_start, placeholder: "18:00", size: 10 %>
+      <em class="info">Format 24h (ex: 18:00). Les alertes directes seront suspendues pendant cette période.</em>
+    </p>
+    <p>
+      <%= f.label :quiet_hours_end, "Heure de fin" %>
+      <%= f.text_field :quiet_hours_end, placeholder: "08:30", size: 10 %>
+      <em class="info">Format 24h (ex: 08:30).</em>
+    </p>
+    <p>
+      <label>Jours actifs</label>
+      <span style="display: inline-flex; gap: 12px; flex-wrap: wrap; padding-top: 4px;">
+        <% active_days = (@preference.work_days || "1,2,3,4,5").split(',') %>
+        <% [["Lundi", "1"], ["Mardi", "2"], ["Mercredi", "3"], ["Jeudi", "4"], ["Vendredi", "5"], ["Samedi", "6"], ["Dimanche", "0"]].each do |day_name, day_code| %>
+          <label style="margin-left: 0; font-weight: normal; width: auto;">
+            <%= check_box_tag "user_notification_preference[work_days][]", day_code, active_days.include?(day_code) %>
+            <%= day_name %>
+          </label>
+        <% end %>
+      </span>
+      <br>
+      <em class="info">Cochez les jours où la plage de silence (Ne Pas Déranger) doit s'appliquer (par défaut: du Lundi au Vendredi).</em>
+    </p>
+  </fieldset>
+
+  <fieldset class="box tabular">
+    <legend>Résumé Quotidien (Digest Email & Chat)</legend>
+    <p>
+      <%= f.label :digest_enabled, "Activer le résumé condensé" %>
+      <%= f.check_box :digest_enabled %>
+      <em class="info">Regroupe toutes les notifications accumulées pendant les heures de silence en un seul message récapitulatif.</em>
+    </p>
+  </fieldset>
+
+  <p>
+    <%= submit_tag "Enregistrer mes préférences", class: 'button' %>
+    <%= link_to "Annuler", :back, class: 'button-secondary' %>
+  </p>
+<% end %>
