@@ -1,13 +1,14 @@
 # Redmine Open Notifications
 
 [![CI & Release Pipeline](https://github.com/ziakor/redmine_open_notifications/actions/workflows/ci-release.yml/badge.svg)](https://github.com/ziakor/redmine_open_notifications/actions/workflows/ci-release.yml)
-[![Version](https://img.shields.io/badge/version-v1.0.0-blue.svg)](https://github.com/ziakor/redmine_open_notifications/releases)
+[![Version](https://img.shields.io/badge/version-v1.2.0-blue.svg)](https://github.com/ziakor/redmine_open_notifications/releases)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Real-time browser notifications, WebPush desktop alerts, `@mentions`, and outbound JSON webhooks for Redmine 5.x+.
+Real-time browser notifications, WebPush desktop alerts, `@mentions`, and outbound JSON webhooks for Redmine 5.x and 6.x.
 
 ## Table of Contents
 
+- [Screenshots](#screenshots)
 - [Features](#features)
 - [Compatibility](#compatibility)
 - [Installation](#installation)
@@ -18,21 +19,40 @@ Real-time browser notifications, WebPush desktop alerts, `@mentions`, and outbou
 - [Running Tests](#running-tests)
 - [License](#license)
 
+## Screenshots
+
+**Notification bell**: unread badge and dropdown in the account menu.
+
+![Notification dropdown](docs/screenshots/notification-dropdown.jpg)
+
+**Notification history**: read, unread and snoozed, with per-row actions.
+
+![Notification history](docs/screenshots/notification-history.jpg)
+
+**User preferences**: event filters, quiet hours, active days, digest.
+
+![User preferences](docs/screenshots/user-preferences.jpg)
+
+**Administration settings**: outbound webhooks and global trigger rules.
+
+![Administration settings](docs/screenshots/admin-settings.jpg)
+
 ## Features
 
 - **In-App Navigation Icon**: Live unread badge count and interactive notification dropdown menu in the top navigation bar.
 - **Desktop WebPush**: Native OS browser push notifications for background alerts.
 - **Smart `@user` Mentions**: Automatic login detection in issue descriptions and comment notes.
 - **Multi-Destination Outbound Webhooks**: Broadcast real-time JSON payloads to external HTTP webhook endpoints (Zapier, n8n, custom webhooks, or integration gateways).
-- **Quiet Hours & Work Days**: Per-user do-not-disturb schedules with customizable active work days (Monday–Friday).
+- **Quiet Hours & Work Days**: Per-user do-not-disturb schedules with customizable active work days (Monday to Friday).
 - **Structured Daily Digest**: Offline notification rollup into a single daily summary card with direct comment anchor links (`#note-X`).
 - **Granular Event Filters**: Per-user preferences to toggle alerts for mentions, issue creation, updates, and comments.
+- **Translatable**: All strings go through Rails i18n (English and French shipped).
 
 ## Compatibility
 
 - Redmine 5.0.x, 5.1.x, 6.0.x
 - Ruby 3.0, 3.1, 3.2, 3.3
-- Rails 6.1.x, 7.0.x
+- Rails 6.1.x, 7.0.x, 7.2.x
 - PostgreSQL, MySQL, SQLite3
 
 ## Installation

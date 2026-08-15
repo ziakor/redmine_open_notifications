@@ -1,11 +1,11 @@
 <div id="notifications-bell-wrapper" style="position: relative; display: inline-block;">
-  <a href="#" id="notifications-bell" title="Notifications">
+  <a href="#" id="notifications-bell" title="<%= l(:label_notifications) %>">
     🔔 <span id="notifications-badge-count" style="display: none;">0</span>
   </a>
   <div id="notifications-dropdown">
     <div style="padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
-      <strong>Notifications</strong>
-      <a href="#" id="mark-all-read-btn" style="font-size: 11px;">Tout marquer comme lu</a>
+      <strong><%= l(:label_notifications) %></strong>
+      <a href="#" id="mark-all-read-btn" style="font-size: 11px;"><%= l(:label_mark_all_read) %></a>
     </div>
     <ul id="notifications-list" style="list-style: none; margin: 0; padding: 0; max-height: 300px; overflow-y: auto;">
     </ul>

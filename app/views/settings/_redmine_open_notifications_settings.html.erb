@@ -281,22 +281,22 @@
 </style>
 
 <div class="modern-settings-container">
-  <div class="settings-section-title">Webhooks Outbound Multi-Destinations</div>
-  <div class="settings-section-subtitle">Ajoutez une ou plusieurs URLs de Webhooks pour diffuser les événements de tickets vers vos services externes (Slack, Teams, Discord, Zapier, n8n...).</div>
+  <div class="settings-section-title"><%= l(:label_outbound_webhooks) %></div>
+  <div class="settings-section-subtitle"><%= l(:text_outbound_webhooks_hint) %></div>
 
   <div class="integration-card">
     <div class="card-header" style="margin-bottom: 16px;">
       <div class="service-info">
         <div class="service-icon-badge">⚡</div>
         <div>
-          <div class="service-title">URLs des Webhooks Outbound</div>
-          <div class="service-desc">Chaque URL recevra le payload JSON d'événement en temps réel.</div>
+          <div class="service-title"><%= l(:label_webhook_urls) %></div>
+          <div class="service-desc"><%= l(:text_webhook_urls_hint) %></div>
         </div>
       </div>
       <% urls = Array(@settings['webhook_urls']).reject(&:blank?) %>
       <% urls = [(@settings['webhook_url'].presence || @settings['slack_webhook_url'].presence)] if urls.empty? && (@settings['webhook_url'].present? || @settings['slack_webhook_url'].present?) %>
       <span class="status-pill <%= urls.any?(&:present?) ? 'status-active' : 'status-inactive' %>">
-        <%= urls.any?(&:present?) ? "#{urls.count} Webhook(s) actif(s)" : 'Inactif' %>
+        <%= urls.any?(&:present?) ? l(:label_webhooks_active, count: urls.count) : l(:label_webhooks_inactive) %>
       </span>
     </div>
 
@@ -304,37 +304,37 @@
       <% urls << '' if urls.empty? %>
       <% urls.each do |url| %>
         <div class="webhook-item-row" style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
-          <input type="text" name="settings[webhook_urls][]" value="<%= url %>" class="modern-input" placeholder="https://votre-destination.com/webhook" style="flex: 1;">
-          <button type="button" class="remove-webhook-btn" title="Supprimer">✕</button>
+          <input type="text" name="settings[webhook_urls][]" value="<%= url %>" class="modern-input" placeholder="<%= l(:text_webhook_url_placeholder) %>" style="flex: 1;">
+          <button type="button" class="remove-webhook-btn" title="<%= l(:button_remove_webhook) %>">✕</button>
         </div>
       <% end %>
     </div>
 
     <button type="button" id="add-webhook-btn" class="button-secondary" style="margin-top: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
-      <span>+ Ajouter un Webhook</span>
+      <span><%= l(:button_add_webhook) %></span>
     </button>
   </div>
 
-  <div class="settings-section-title">Comportement & Événements Globaux</div>
-  <div class="settings-section-subtitle">Définissez les règles de déclenchement par défaut pour toutes les notifications.</div>
+  <div class="settings-section-title"><%= l(:label_global_behaviour) %></div>
+  <div class="settings-section-subtitle"><%= l(:text_global_behaviour_hint) %></div>
 
   <div class="toggles-card">
     <div class="toggle-row" style="flex-direction: column; align-items: flex-start; gap: 8px;">
       <div>
-        <div class="toggle-label">Événements déclencheurs par défaut</div>
-        <div class="toggle-subtext">Sélectionnez les actions de tickets qui déclenchent une notification.</div>
+        <div class="toggle-label"><%= l(:label_default_trigger_events) %></div>
+        <div class="toggle-subtext"><%= l(:text_default_trigger_events_hint) %></div>
       </div>
       <div class="checkbox-pill-group">
         <%= hidden_field_tag 'settings[enabled_events][]', '' %>
         <% [
-          ['issue_created', 'Nouveau ticket'],
-          ['issue_updated', 'Ticket mis à jour'],
-          ['note_added', 'Nouveau commentaire'],
-          ['user_mentioned', 'Mention @user']
-        ].each do |event_key, event_label| %>
+          ['issue_created', :label_event_issue_created],
+          ['issue_updated', :label_event_issue_updated],
+          ['note_added', :label_event_note_added],
+          ['user_mentioned', :label_event_user_mentioned]
+        ].each do |event_key, event_label_key| %>
           <label class="checkbox-pill-label">
             <%= check_box_tag 'settings[enabled_events][]', event_key, Array(@settings['enabled_events']).include?(event_key) %>
-            <%= event_label %>
+            <%= l(event_label_key) %>
           </label>
         <% end %>
       </div>
@@ -342,8 +342,8 @@
 
     <div class="toggle-row">
       <div>
-        <div class="toggle-label">Exclure les auto-notifications</div>
-        <div class="toggle-subtext">Ne pas envoyer de notification à l'utilisateur qui a lui-même créé ou commenté le ticket.</div>
+        <div class="toggle-label"><%= l(:label_suppress_self_notifications) %></div>
+        <div class="toggle-subtext"><%= l(:text_suppress_self_notifications_hint) %></div>
       </div>
       <div>
         <%= check_box_tag 'settings[suppress_self_notifications]', '1', @settings['suppress_self_notifications'] == '1' %>
@@ -352,8 +352,8 @@
 
     <div class="toggle-row">
       <div>
-        <div class="toggle-label">Autoriser le WebPush Navigateur Desktop</div>
-        <div class="toggle-subtext">Permet aux utilisateurs de recevoir des pop-up d'alerte Push sur leur bureau.</div>
+        <div class="toggle-label"><%= l(:label_enable_webpush) %></div>
+        <div class="toggle-subtext"><%= l(:text_enable_webpush_hint) %></div>
       </div>
       <div>
         <%= check_box_tag 'settings[enable_webpush]', '1', @settings['enable_webpush'] == '1' %>
@@ -363,7 +363,7 @@
 
   <!-- Prominent Action Bar at the bottom of the card container -->
   <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--notif-card-border); display: flex; justify-content: flex-end;">
-    <input type="submit" name="commit" value="Enregistrer les paramètres" class="submit-settings-btn">
+    <input type="submit" name="commit" value="<%= l(:button_save_settings) %>" class="submit-settings-btn">
   </div>
 </div>
 
@@ -371,9 +371,9 @@
 <div id="unsaved-changes-banner">
   <div style="display: flex; align-items: center; gap: 8px;">
     <span class="unsaved-dot"></span>
-    <span>Modifications non enregistrées</span>
+    <span><%= l(:text_unsaved_changes) %></span>
   </div>
-  <button type="button" id="banner-submit-btn" class="banner-save-btn">Enregistrer</button>
+  <button type="button" id="banner-submit-btn" class="banner-save-btn"><%= l(:button_save) %></button>
 </div>
 
 <script>
@@ -406,8 +406,8 @@
         row.className = 'webhook-item-row';
         row.style.cssText = 'display: flex; gap: 10px; margin-bottom: 10px; align-items: center;';
         row.innerHTML = `
-          <input type="text" name="settings[webhook_urls][]" value="" class="modern-input" placeholder="https://votre-destination.com/webhook" style="flex: 1;">
-          <button type="button" class="remove-webhook-btn" title="Supprimer">✕</button>
+          <input type="text" name="settings[webhook_urls][]" value="" class="modern-input" placeholder="<%= l(:text_webhook_url_placeholder) %>" style="flex: 1;">
+          <button type="button" class="remove-webhook-btn" title="<%= l(:button_remove_webhook) %>">✕</button>
         `;
         container.appendChild(row);
         showUnsavedBanner();

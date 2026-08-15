@@ -1,4 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+  const I18N = Object.assign({
+    title: 'Notifications',
+    markAllRead: 'Mark all read',
+    viewAll: 'View all notifications',
+    loading: 'Loading...',
+    empty: 'No notifications yet.',
+    emptyUnread: 'No unread notifications.'
+  }, (window.RedmineOpenNotifications || {}).i18n || {});
+
   const menuIcon = document.getElementById('notifications-menu-icon');
   if (!menuIcon) return;
 
@@ -17,18 +27,18 @@ document.addEventListener('DOMContentLoaded', () => {
     dropdown.id = 'notifications-dropdown-popup';
     dropdown.innerHTML = `
       <div class="notif-header">
-        <strong>Notifications</strong>
+        <strong>${escapeHtml(I18N.title)}</strong>
         <div>
-          <a href="#" id="notif-mark-all-read" style="font-size: 11px;">Tout marquer lu</a>
+          <a href="#" id="notif-mark-all-read" style="font-size: 11px;">${escapeHtml(I18N.markAllRead)}</a>
         </div>
       </div>
       <div class="notif-body">
         <ul id="notif-items-list">
-          <li class="notif-empty">Chargement...</li>
+          <li class="notif-empty">${escapeHtml(I18N.loading)}</li>
         </ul>
       </div>
       <div class="notif-footer">
-        <a href="/user_notifications">Voir toutes les notifications</a>
+        <a href="/user_notifications">${escapeHtml(I18N.viewAll)}</a>
       </div>
     `;
     document.body.appendChild(dropdown);
@@ -70,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(() => {
         const list = document.getElementById('notif-items-list');
         if (list) {
-          list.innerHTML = '<li class="notif-empty">Aucune notification non lue.</li>';
+          list.innerHTML = `<li class="notif-empty">${escapeHtml(I18N.emptyUnread)}</li>`;
         }
       });
   }
@@ -95,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!list) return;
 
     if (!Array.isArray(data) || data.length === 0) {
-      list.innerHTML = '<li class="notif-empty">Aucune notification pour le moment.</li>';
+      list.innerHTML = `<li class="notif-empty">${escapeHtml(I18N.empty)}</li>`;
       return;
     }
 
@@ -136,7 +146,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Close dropdown when clicking outside
   document.addEventListener('click', (e) => {
-    if (dropdown && !dropdown.contains(e.target) && e.target !== menuIcon) {
+    // menuIcon.contains, not an identity check: clicking the unread badge
+    // nested inside the bell reports the badge as the target, which used to
+    // close the dropdown in the same gesture that opened it.
+    if (dropdown && !dropdown.contains(e.target) && !menuIcon.contains(e.target)) {
       dropdown.classList.remove('visible');
     }
   });

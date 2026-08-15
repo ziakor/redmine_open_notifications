@@ -1,19 +1,19 @@
-<h2>Historique des Notifications</h2>
+<h2><%= l(:label_notification_history) %></h2>
 
 <% if @notifications.any? %>
   <div style="margin-bottom: 15px; display: flex; gap: 8px;">
-    <%= button_to "Tout marquer comme lu", read_all_user_notifications_path, method: :post, class: 'button' %>
-    <%= button_to "Tout supprimer", clear_all_user_notifications_path, method: :post, data: { confirm: "Êtes-vous sûr de vouloir supprimer toutes vos notifications ?" }, class: 'button' %>
+    <%= button_to l(:label_mark_all_read), read_all_user_notifications_path, method: :post, class: 'button' %>
+    <%= button_to l(:button_delete_all_notifications), clear_all_user_notifications_path, method: :post, data: { confirm: l(:text_confirm_delete_all_notifications) }, class: 'button' %>
   </div>
 
   <table class="list notifications-table">
     <thead>
       <tr>
-        <th style="width: 90px; text-align: center;">Statut</th>
-        <th style="width: 140px;">Date</th>
-        <th style="width: 150px;">Projet</th>
-        <th>Message & Ticket</th>
-        <th style="width: 220px; text-align: center;">Actions</th>
+        <th style="width: 90px; text-align: center;"><%= l(:label_notification_status) %></th>
+        <th style="width: 140px;"><%= l(:label_notification_date) %></th>
+        <th style="width: 150px;"><%= l(:label_notification_project) %></th>
+        <th><%= l(:label_notification_message) %></th>
+        <th style="width: 220px; text-align: center;"><%= l(:label_notification_actions) %></th>
       </tr>
     </thead>
     <tbody>
@@ -21,9 +21,9 @@
         <tr class="<%= n.read_at.nil? ? 'unread-row' : 'read-row' %>">
           <td style="text-align: center;">
             <% if n.read_at.nil? %>
-              <span class="badge-unread">● Non lue</span>
+              <span class="badge-unread">● <%= l(:label_notification_unread) %></span>
             <% else %>
-              <span class="badge-read">✓ Lue</span>
+              <span class="badge-read">✓ <%= l(:label_notification_read) %></span>
             <% end %>
           </td>
           <td><%= format_time(n.created_at) %></td>
@@ -41,10 +41,10 @@
           <td style="text-align: center;">
             <div style="display: flex; gap: 4px; justify-content: center; align-items: center;">
               <% if n.read_at.nil? %>
-                <%= button_to "Marquer lu", user_notification_path(n), method: :put, class: 'button-small' %>
-                <%= button_to "Snooze 2h", snooze_user_notification_path(n), method: :post, class: 'button-small' %>
+                <%= button_to l(:button_mark_notification_read), user_notification_path(n), method: :put, class: 'button-small' %>
+                <%= button_to l(:button_snooze_notification), snooze_user_notification_path(n), method: :post, class: 'button-small' %>
               <% end %>
-              <%= button_to "Supprimer", user_notification_path(n), method: :delete, data: { confirm: "Supprimer cette notification ?" }, class: 'button-small' %>
+              <%= button_to l(:button_delete_notification), user_notification_path(n), method: :delete, data: { confirm: l(:text_confirm_delete_notification) }, class: 'button-small' %>
             </div>
           </td>
         </tr>
@@ -52,5 +52,5 @@
     </tbody>
   </table>
 <% else %>
-  <p class="nodata">Aucune notification pour le moment.</p>
+  <p class="nodata"><%= l(:text_no_notifications) %></p>
 <% end %>

@@ -1,14 +1,14 @@
 <fieldset class="box my-account-notif-box" style="margin-top: 15px; border-radius: 6px; border: 1px solid #dcdcdc; background: #fafafa;">
-  <legend style="font-weight: bold; color: #2c3e50;">Notifications</legend>
+  <legend style="font-weight: bold; color: #2c3e50;"><%= l(:label_notifications) %></legend>
   <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px;">
     <div style="display: flex; align-items: center; gap: 12px;">
       <span style="font-size: 22px;">🔔</span>
       <div>
-        <strong style="font-size: 13px; color: #2c3e50;">Alertes temps réel & Push desktop</strong>
+        <strong style="font-size: 13px; color: #2c3e50;"><%= l(:label_my_account_notifications_title) %></strong>
         <br>
-        <span style="font-size: 11px; color: #7f8c8d;">Plages de silence et résumés quotidiens.</span>
+        <span style="font-size: 11px; color: #7f8c8d;"><%= l(:label_my_account_notifications_subtitle) %></span>
       </div>
     </div>
-    <%= link_to "Gérer mes préférences", notification_preference_path, class: 'button', style: 'margin: 0; padding: 6px 14px; font-weight: 600;' %>
+    <%= link_to l(:button_manage_notification_preferences), notification_preference_path, class: 'button', style: 'margin: 0; padding: 6px 14px; font-weight: 600;' %>
   </div>
 </fieldset>

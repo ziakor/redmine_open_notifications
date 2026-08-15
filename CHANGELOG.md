@@ -5,11 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-08-15
+
+### Added
+- i18n: all user-facing strings moved from hardcoded French to `config/locales/en.yml` and `fr.yml` (80 keys, en/fr in parity). The dropdown is rendered client-side, so the layout hook passes its strings to JS. Quiet-hours day names come from Rails `date.day_names`.
+- README screenshots: dropdown, history, user preferences, admin settings.
+
+### Fixed
+- Clicking the unread badge closed the dropdown instead of opening it: the outside-click handler compared the target to the bell by identity rather than `contains`.
+- Snooze notice always said "2 hours", ignoring the `hours` param.
+
 ## [1.1.0] - 2026-08-15
 
 ### Added
-- **Clickable dropdown notifications**: clicking an entry in the bell dropdown now marks it as read and opens the related issue, scrolled to the exact comment when the notification carries one. Dropdown entries previously rendered as inert list items with no link and no click handler, while the desktop toast and the full notification page both navigated — the dropdown was the only dead end.
-- **Redmine 6.x support**: verified against Redmine 6.0.6 (Rails 7.2.2.1, Ruby 3.3) — plugin boot, the four migrations, model patching, notification bell rendering and the admin settings page. Redmine 5.x (Rails 6.1) remains supported.
+- **Clickable dropdown notifications**: clicking an entry in the bell dropdown now marks it as read and opens the related issue, scrolled to the exact comment when the notification carries one. Dropdown entries previously rendered as inert list items with no link and no click handler, while the desktop toast and the full notification page both navigated. The dropdown was the only dead end.
+- **Redmine 6.x support**: verified against Redmine 6.0.6 (Rails 7.2.2.1, Ruby 3.3): plugin boot, the four migrations, model patching, notification bell rendering and the admin settings page. Redmine 5.x (Rails 6.1) remains supported.
 - **CI**: Ruby 3.3 added to the test matrix.
 
 ### Fixed
@@ -22,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Real-Time Notification Bell**: Top-right account menu integration (`🔔`) with unread badge count and floating dropdown popup.
 - **W3C WebPush API**: Browser desktop push notification toasts with permission request modal and test triggers.
 - **Smart `@user` Mention Parser**: Extracts login mentions from issue descriptions and journal comments.
-- **Personal Quiet Hours (Do Not Disturb)**: Custom start/end times with Monday–Friday work day selector.
+- **Personal Quiet Hours (Do Not Disturb)**: Custom start/end times with Monday to Friday work day selector.
 - **Granular Event Filtering**: Per-user event preference toggles (Mentions, New Issues, Updates, Notes).
 - **Structured Daily Digest**: Automated summary notification grouping events by issue with direct links to exact comment anchors (`#note-X`).
 - **Linear-Style Admin Settings**: Modern control panel with dynamic Outbound Multi-Webhook URL management (`+ Add Webhook`, `✕` remove button).

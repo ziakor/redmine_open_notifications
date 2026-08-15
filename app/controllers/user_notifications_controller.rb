@@ -15,7 +15,7 @@ class UserNotificationsController < ApplicationController
     notification = User.current.user_notifications.find(params[:id])
     notification.update(read_at: Time.current)
     respond_to do |format|
-      format.html { redirect_to user_notifications_path, notice: "Notification marquée comme lue." }
+      format.html { redirect_to user_notifications_path, notice: l(:notice_notification_marked_read) }
       format.json { render json: { status: 'success' } }
     end
   end
@@ -24,7 +24,7 @@ class UserNotificationsController < ApplicationController
     notification = User.current.user_notifications.find(params[:id])
     notification.destroy
     respond_to do |format|
-      format.html { redirect_to user_notifications_path, notice: "Notification supprimée." }
+      format.html { redirect_to user_notifications_path, notice: l(:notice_notification_deleted) }
       format.json { render json: { status: 'success' } }
     end
   end
@@ -32,7 +32,7 @@ class UserNotificationsController < ApplicationController
   def read_all
     User.current.user_notifications.unread.update_all(read_at: Time.current)
     respond_to do |format|
-      format.html { redirect_to user_notifications_path, notice: "Toutes les notifications ont été marquées comme lues." }
+      format.html { redirect_to user_notifications_path, notice: l(:notice_all_notifications_marked_read) }
       format.json { render json: { status: 'success' } }
     end
   end
@@ -40,17 +40,17 @@ class UserNotificationsController < ApplicationController
   def clear_all
     User.current.user_notifications.destroy_all
     respond_to do |format|
-      format.html { redirect_to user_notifications_path, notice: "Toutes les notifications ont été supprimées." }
+      format.html { redirect_to user_notifications_path, notice: l(:notice_all_notifications_deleted) }
       format.json { render json: { status: 'success' } }
     end
   end
 
   def snooze
     notification = User.current.user_notifications.find(params[:id])
-    duration = (params[:hours] || 2).to_i.hours
-    notification.update(snoozed_until: Time.current + duration)
+    hours = (params[:hours] || 2).to_i
+    notification.update(snoozed_until: Time.current + hours.hours)
     respond_to do |format|
-      format.html { redirect_to user_notifications_path, notice: "Notification suspendue pour 2 heures." }
+      format.html { redirect_to user_notifications_path, notice: l(:notice_notification_snoozed, count: hours) }
       format.json { render json: { status: 'snoozed', until: notification.snoozed_until } }
     end
   end
