@@ -17,7 +17,7 @@ class NotificationDigestJob < ApplicationJob
         next unless issue
         summary_items << "<strong>Ticket ##{issue.id} : #{issue.subject} (#{issue.project.name})</strong>"
         notifs.each do |n|
-          anchor_url = n.journal_id ? "/issues/#{issue.id}#note-#{n.journal_id}" : "/issues/#{issue.id}"
+          anchor_url = n.target_url || "/issues/#{issue.id}"
           author_name = n.author&.name || 'Utilisateur'
           summary_items << "  • <a href='#{anchor_url}' style='color: #0366d6; text-decoration: underline;'>Commentaire de #{author_name}</a> : <em>\"#{n.body.to_s.truncate(80)}\"</em>"
         end

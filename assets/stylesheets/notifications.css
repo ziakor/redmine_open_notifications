@@ -97,6 +97,7 @@ body.theme-dark, html[data-theme="dark"], body.dark {
   border-bottom: 1px solid var(--notif-border);
   padding: 10px 14px;
   transition: background-color 0.15s ease;
+  cursor: pointer;
 }
 
 #notifications-dropdown-popup li.notif-item.unread {

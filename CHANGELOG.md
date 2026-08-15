@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-08-15
+
+### Added
+- **Clickable dropdown notifications**: clicking an entry in the bell dropdown now marks it as read and opens the related issue, scrolled to the exact comment when the notification carries one. Dropdown entries previously rendered as inert list items with no link and no click handler, while the desktop toast and the full notification page both navigated — the dropdown was the only dead end.
+- **Redmine 6.x support**: verified against Redmine 6.0.6 (Rails 7.2.2.1, Ruby 3.3) — plugin boot, the four migrations, model patching, notification bell rendering and the admin settings page. Redmine 5.x (Rails 6.1) remains supported.
+- **CI**: Ruby 3.3 added to the test matrix.
+
+### Fixed
+- **Digest links now point at anchors that exist**: the daily digest built comment anchors from `journal_id`, but Redmine anchors notes on their 1-based position within the issue (`Issue#visible_journals_with_index`). Digest links landed on the issue without ever scrolling to the comment. Anchor building now lives in `UserNotification#target_url` and is shared by the digest and the dropdown.
+- **`NotificationRule` no longer breaks application boot on Rails 7.2**: `serialize :events, Array` used the positional argument form, which Rails 7.1 replaced with the `type:` keyword and Rails 7.2 removed outright, raising `ArgumentError: wrong number of arguments` before Puma could start. Both forms are now selected at load time based on the Active Record version.
+
 ## [1.0.0] - 2026-08-12
 
 ### Added

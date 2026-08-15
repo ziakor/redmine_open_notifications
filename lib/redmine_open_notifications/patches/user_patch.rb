@@ -12,7 +12,3 @@ module RedmineOpenNotifications
     end
   end
 end
-
-unless User.included_modules.include?(RedmineOpenNotifications::Patches::UserPatch)
-  User.include(RedmineOpenNotifications::Patches::UserPatch)
-end

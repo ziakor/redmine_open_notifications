@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     list.innerHTML = data.slice(0, 10).map(n => `
-      <li class="notif-item ${n.read_at ? 'read' : 'unread'}" data-id="${n.id}">
+      <li class="notif-item ${n.read_at ? 'read' : 'unread'}" data-id="${n.id}" data-url="${escapeHtml(n.target_url || '')}">
         <div class="notif-title">${escapeHtml(n.title)}</div>
         <div class="notif-text">${n.event_type === 'digest_summary' ? (n.body || '') : escapeHtml(n.body || '')}</div>
       </li>
@@ -156,6 +156,27 @@ document.addEventListener('DOMContentLoaded', () => {
           loadNotifications();
         });
     }
+  });
+
+  // Notification item click handler: mark as read, then open the related issue
+  document.addEventListener('click', (e) => {
+    const item = e.target.closest ? e.target.closest('.notif-item') : null;
+    if (!item) return;
+
+    e.preventDefault();
+
+    const id = item.dataset.id;
+    const url = item.dataset.url;
+    const wasUnread = item.classList.contains('unread');
+    const go = () => { if (url) { window.location.href = url; } else { loadNotifications(); } };
+
+    if (!id || !wasUnread) { go(); return; }
+
+    fetch('/user_notifications/' + id, {
+      method: 'PATCH',
+      headers: { 'X-CSRF-Token': getCsrfToken(), 'Accept': 'application/json' },
+      credentials: 'same-origin'
+    }).then(go, go);
   });
 
   // 4. Initial Load + Periodic Polling (every 5s)

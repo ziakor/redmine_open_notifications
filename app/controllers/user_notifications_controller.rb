@@ -7,7 +7,7 @@ class UserNotificationsController < ApplicationController
     @notifications = User.current.user_notifications.active.order(created_at: :desc).limit(50)
     respond_to do |format|
       format.html
-      format.json { render json: @notifications }
+      format.json { render json: @notifications.as_json(methods: [:target_url]) }
     end
   end
 
