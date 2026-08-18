@@ -1,10 +1,10 @@
 # Redmine Open Notifications
 
 [![CI & Release Pipeline](https://github.com/ziakor/redmine_open_notifications/actions/workflows/ci-release.yml/badge.svg)](https://github.com/ziakor/redmine_open_notifications/actions/workflows/ci-release.yml)
-[![Version](https://img.shields.io/badge/version-v1.2.0-blue.svg)](https://github.com/ziakor/redmine_open_notifications/releases)
+[![Version](https://img.shields.io/badge/version-v1.3.0-blue.svg)](https://github.com/ziakor/redmine_open_notifications/releases)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Real-time browser notifications, WebPush desktop alerts, `@mentions`, and outbound JSON webhooks for Redmine 5.x and 6.x.
+Real-time browser notifications, foreground desktop alerts, `@mentions`, and outbound JSON webhooks for Redmine 5.x and 6.x.
 
 ## Table of Contents
 
@@ -40,7 +40,7 @@ Real-time browser notifications, WebPush desktop alerts, `@mentions`, and outbou
 ## Features
 
 - **In-App Navigation Icon**: Live unread badge count and interactive notification dropdown menu in the top navigation bar.
-- **Desktop WebPush**: Native OS browser push notifications for background alerts.
+- **Desktop Browser Notifications**: Native OS notification pop-ups triggered while a Redmine tab is open (foreground only — this is not background Push API delivery).
 - **Smart `@user` Mentions**: Automatic login detection in issue descriptions and comment notes.
 - **Multi-Destination Outbound Webhooks**: Broadcast real-time JSON payloads to external HTTP webhook endpoints (Zapier, n8n, custom webhooks, or integration gateways).
 - **Quiet Hours & Work Days**: Per-user do-not-disturb schedules with customizable active work days (Monday to Friday).
@@ -90,7 +90,7 @@ Navigate to **Administration > Plugins > Redmine Open Notifications > Configure*
 
 Users can manage personal notification preferences via **My Account > Notifications** (`/notification_preference`):
 
-- Toggle desktop browser push notifications.
+- Toggle desktop browser notifications (foreground only, while a Redmine tab is open).
 - Enable or disable specific event types (Mentions, New Issues, Updates, Comments).
 - Configure quiet hours and active work days.
 - Toggle daily digest summaries.

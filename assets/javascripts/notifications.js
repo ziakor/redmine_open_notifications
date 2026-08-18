@@ -12,6 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuIcon = document.getElementById('notifications-menu-icon');
   if (!menuIcon) return;
 
+  const webpushEnabled = !!(window.RedmineOpenNotifications || {}).webpushEnabled;
+
+  if (webpushEnabled && typeof Notification !== 'undefined' && Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+
   // 1. Create Badge & Dropdown elements
   let badge = document.getElementById('notifications-badge-count');
   if (!badge) {
@@ -86,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function triggerPushNotification(title, body, issueId) {
-    if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+    if (webpushEnabled && typeof Notification !== 'undefined' && Notification.permission === 'granted') {
       const toast = new Notification(title, {
         body: body,
         icon: '/favicon.ico'

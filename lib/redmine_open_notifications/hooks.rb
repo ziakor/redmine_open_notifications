@@ -11,10 +11,11 @@ module RedmineOpenNotifications
         empty: l(:text_no_notifications),
         emptyUnread: l(:text_no_unread_notifications)
       }
+      webpush_enabled = UserNotificationPreference.find_by(user_id: User.current.id)&.webpush_enabled? || false
 
       tags = []
       tags << stylesheet_link_tag('notifications', plugin: 'redmine_open_notifications')
-      tags << javascript_tag("window.RedmineOpenNotifications = window.RedmineOpenNotifications || {}; window.RedmineOpenNotifications.i18n = #{strings.to_json};")
+      tags << javascript_tag("window.RedmineOpenNotifications = window.RedmineOpenNotifications || {}; window.RedmineOpenNotifications.i18n = #{strings.to_json}; window.RedmineOpenNotifications.webpushEnabled = #{webpush_enabled.to_json};")
       tags << javascript_include_tag('notifications', plugin: 'redmine_open_notifications')
       tags.join("\n").html_safe
     end

@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-08-18
+
+### Changed
+- **Desktop notifications now request permission and respect the user's preference**: the bell dropdown polling used to fire `new Notification()` whenever the browser already had permission granted some other way, ignoring the `webpush_enabled` preference entirely. The preference is now passed to the client, permission is requested explicitly when the preference is on, and the toast is gated on that preference.
+- **Renamed "WebPush" to "browser notifications" everywhere user-facing** (README, settings, preferences, en/fr locales): the feature is a foreground toast triggered by polling while a Redmine tab is open, not W3C Push API delivery to a closed browser. The previous naming implied background push that never existed.
+
+### Removed
+- `app/services/web_push_service.rb` and `assets/javascripts/service_worker.js`: dead code that was never invoked and implied a real push backend was in place.
+- `webpush_subscription` from the notification preference's permitted params (never populated).
+
 ## [1.2.0] - 2026-08-15
 
 ### Added

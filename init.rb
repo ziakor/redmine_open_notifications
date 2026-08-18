@@ -6,8 +6,8 @@ require_relative 'lib/redmine_open_notifications/hooks'
 Redmine::Plugin.register :redmine_open_notifications do
   name 'Redmine Open Notifications'
   author 'Dimitri Hauet'
-  description 'Real-time WebSockets, WebPush, @mentions, and multi-channel chat notifications for Redmine.'
-  version '1.2.0'
+  description 'Real-time WebSockets, foreground desktop notifications, @mentions, and multi-channel chat notifications for Redmine.'
+  version '1.3.0'
   url 'https://github.com/ziakor/redmine_open_notifications'
   requires_redmine version_or_higher: '5.0.0'
 
