@@ -9,7 +9,6 @@ class NotificationDigestJob < ApplicationJob
       unread_notifications = user.user_notifications.unread.where('created_at >= ?', 24.hours.ago).includes(:issue, :journal, :author)
       next if unread_notifications.empty?
 
-      # Group notifications by issue for clean readability with direct links to exact comment anchors (#note-X)
       grouped_by_issue = unread_notifications.group_by(&:issue)
       summary_items = []
 

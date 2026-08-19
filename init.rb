@@ -14,6 +14,8 @@ Redmine::Plugin.register :redmine_open_notifications do
   settings default: {
     'webhook_urls' => [],
     'enabled_events' => ['issue_created', 'issue_updated', 'note_added', 'user_mentioned'],
+    'recipient_mode' => 'redmine_default',
+    'always_notify_mentions' => '1',
     'suppress_self_notifications' => '1',
     'enable_webpush' => '1'
   }, partial: 'settings/redmine_open_notifications_settings'
@@ -23,7 +25,6 @@ Redmine::Plugin.register :redmine_open_notifications do
     permission :manage_notification_rules, { notification_rules: [:index, :edit, :update] }, require: :member
   end
 
-  # Position the notification bell icon (🔔 only) in the account menu on the TOP RIGHT next to My Account
   menu :account_menu, :notifications, { controller: 'user_notifications', action: 'index' },
        caption: '🔔',
        html: { id: 'notifications-menu-icon' },

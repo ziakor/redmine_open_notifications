@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     Notification.requestPermission();
   }
 
-  // 1. Create Badge & Dropdown elements
   let badge = document.getElementById('notifications-badge-count');
   if (!badge) {
     badge = document.createElement('span');
@@ -52,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let lastNotifiedId = parseInt(sessionStorage.getItem('last_notified_id') || '0', 10);
 
-  // 2. Fetch Unread Count & Items with Push Toast Trigger
   function loadNotifications() {
     fetch('/user_notifications', {
       headers: { 'Accept': 'application/json' },
@@ -69,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
           badge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
           renderDropdownItems(data);
 
-          // Trigger native Desktop Browser Notification Toast for new unread notifications
           const latestUnread = data.find(n => !n.read_at);
           if (latestUnread) {
             if (lastNotifiedId === 0) {
@@ -133,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return tmp.textContent || tmp.innerText || "";
   }
 
-  // 3. Toggle Dropdown Popup under Bell Icon
   menuIcon.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -150,17 +146,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Close dropdown when clicking outside
   document.addEventListener('click', (e) => {
-    // menuIcon.contains, not an identity check: clicking the unread badge
-    // nested inside the bell reports the badge as the target, which used to
-    // close the dropdown in the same gesture that opened it.
     if (dropdown && !dropdown.contains(e.target) && !menuIcon.contains(e.target)) {
       dropdown.classList.remove('visible');
     }
   });
 
-  // Mark all as read click handler
   document.addEventListener('click', (e) => {
     if (e.target && e.target.id === 'notif-mark-all-read') {
       e.preventDefault();
@@ -177,7 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Notification item click handler: mark as read, then open the related issue
   document.addEventListener('click', (e) => {
     const item = e.target.closest ? e.target.closest('.notif-item') : null;
     if (!item) return;
@@ -198,7 +188,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }).then(go, go);
   });
 
-  // 4. Initial Load + Periodic Polling (every 5s)
   loadNotifications();
   setInterval(loadNotifications, 5000);
 

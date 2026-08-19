@@ -35,6 +35,7 @@ class NotificationPreferencesController < ApplicationController
 
   def preference_params
     params.require(:user_notification_preference).permit(
+      :notification_scope,
       :webpush_enabled,
       :enable_sound, :enabled_events,
       :quiet_hours_start, :quiet_hours_end, :work_days,

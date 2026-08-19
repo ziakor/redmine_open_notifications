@@ -1,6 +1,26 @@
 <h2><%= l(:label_notification_preferences) %></h2>
 
+<div class="flash notice" style="margin-bottom: 16px; background: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1; border-radius: 6px; padding: 12px 16px; font-size: 13px;">
+  <strong>ℹ️ <%= l(:label_redmine_sync_info_title) %> :</strong> <%= l(:text_redmine_sync_info_body) %>
+  <%= link_to l(:label_my_account), { controller: 'my', action: 'account' }, style: "text-decoration: underline; font-weight: 600; color: #0284c7;" %>.
+</div>
+
 <%= form_for @preference, url: notification_preference_path, method: :put do |f| %>
+  <fieldset class="box tabular">
+    <legend><%= l(:label_notification_scope_section) %></legend>
+    <p>
+      <%= f.label :notification_scope, l(:label_notification_scope) %>
+      <%= f.select :notification_scope, [
+        [l(:option_scope_redmine_default), 'redmine_default'],
+        [l(:option_scope_only_involved), 'only_involved'],
+        [l(:option_scope_all_events), 'all_events'],
+        [l(:option_scope_mentions_only), 'mentions_only']
+      ] %>
+      <br>
+      <em class="info"><%= l(:text_notification_scope_hint) %></em>
+    </p>
+  </fieldset>
+
   <fieldset class="box tabular">
     <legend><%= l(:label_notification_channels) %></legend>
     <p>

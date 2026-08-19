@@ -11,7 +11,6 @@
     --notif-pill-color: #334155;
   }
 
-  /* Only switch to dark styling if Redmine theme explicitly defines a dark class */
   body.theme-dark, html[data-theme="dark"], body.dark {
     --notif-card-bg: #1e293b;
     --notif-card-border: #334155;
@@ -24,7 +23,6 @@
     --notif-pill-color: #e2e8f0;
   }
 
-  /* Hide Redmine core's redundant duplicate submit button rendered outside the partial at the bottom */
   form[action*="settings/plugin/redmine_open_notifications"] > input[type="submit"] {
     display: none !important;
   }
@@ -144,7 +142,6 @@
     margin-top: 10px;
     align-items: center;
   }
-  /* Force isolation from Redmine base label floats and widths */
   .checkbox-pill-label {
     display: inline-flex !important;
     align-items: center !important;
@@ -225,7 +222,6 @@
     background: #1d4ed8 !important;
   }
 
-  /* Floating Vercel-style Unsaved Changes Banner */
   #unsaved-changes-banner {
     position: fixed;
     bottom: 24px;
@@ -315,6 +311,36 @@
     </button>
   </div>
 
+  <div class="settings-section-title"><%= l(:label_recipient_targeting) %></div>
+  <div class="settings-section-subtitle"><%= l(:text_recipient_targeting_hint) %></div>
+
+  <div class="toggles-card">
+    <div class="toggle-row" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+      <div>
+        <div class="toggle-label"><%= l(:label_recipient_mode) %></div>
+        <div class="toggle-subtext"><%= l(:text_recipient_mode_hint) %></div>
+      </div>
+      <div style="width: 100%; margin-top: 6px;">
+        <% current_mode = @settings['recipient_mode'].presence || 'redmine_default' %>
+        <select name="settings[recipient_mode]" class="modern-input" style="width: 100%; max-width: 480px;">
+          <option value="redmine_default" <%= 'selected' if current_mode == 'redmine_default' %>><%= l(:option_recipient_mode_redmine_default) %></option>
+          <option value="involved_only" <%= 'selected' if current_mode == 'involved_only' %>><%= l(:option_recipient_mode_involved_only) %></option>
+          <option value="all_project_members" <%= 'selected' if current_mode == 'all_project_members' %>><%= l(:option_recipient_mode_all_project_members) %></option>
+        </select>
+      </div>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label"><%= l(:label_always_notify_mentions) %></div>
+        <div class="toggle-subtext"><%= l(:text_always_notify_mentions_hint) %></div>
+      </div>
+      <div>
+        <%= check_box_tag 'settings[always_notify_mentions]', '1', @settings['always_notify_mentions'] != '0' %>
+      </div>
+    </div>
+  </div>
+
   <div class="settings-section-title"><%= l(:label_global_behaviour) %></div>
   <div class="settings-section-subtitle"><%= l(:text_global_behaviour_hint) %></div>
 
@@ -361,13 +387,11 @@
     </div>
   </div>
 
-  <!-- Prominent Action Bar at the bottom of the card container -->
   <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--notif-card-border); display: flex; justify-content: flex-end;">
     <input type="submit" name="commit" value="<%= l(:button_save_settings) %>" class="submit-settings-btn">
   </div>
 </div>
 
-<!-- Floating Unsaved Changes Notification Pill -->
 <div id="unsaved-changes-banner">
   <div style="display: flex; align-items: center; gap: 8px;">
     <span class="unsaved-dot"></span>
