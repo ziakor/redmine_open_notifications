@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2026-08-19
+
+### Fixed
+- **Resolved fatal i18n key collision with Redmine native mailer**: `config/locales/fr.yml` and `en.yml` defined `text_issue_updated` and `text_user_mentioned`. Overriding Redmine's built-in `text_issue_updated` caused `ActionView::Template::Error (missing interpolation argument :issue_id)` on `app/views/mailer/issue_edit.text.erb`, crashing ticket update email notifications across the Redmine instance.
+
+### Added
+- **Native Redmine notification degree synchronization & targeting scopes**: added `recipient_mode` global setting (`redmine_default`, `involved_only`, `all_project_members`) and per-user `notification_scope` preference (`redmine_default`, `only_involved`, `all_events`, `mentions_only`), fully synchronizing in-app alerts with Redmine's built-in email notification rules and automatic watching settings.
+
 ## [1.3.0] - 2026-08-18
 
 ### Changed

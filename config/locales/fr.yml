@@ -107,6 +107,3 @@ fr:
   button_save_settings: "Enregistrer les paramètres"
   text_unsaved_changes: "Modifications non enregistrées"
   button_save: "Enregistrer"
-
-  text_user_mentioned: "%{author} vous a mentionné sur le ticket #%{issue_id}"
-  text_issue_updated: "Ticket #%{issue_id} mis à jour dans %{project}"
